@@ -1,3 +1,4 @@
+from fastapi import FastAPI, Depends, HTTPException, UploadFile, File
 import requests
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -88,3 +89,25 @@ def check_grammar(note_id: int, db: Session = Depends(get_db)):
         
     # 4. Return the grammar suggestions to the user
     return response.json()
+
+
+# Endpoint to upload a physical .md file
+@app.post("/notes/upload/", response_model=schemas.NoteResponse)
+async def upload_markdown_file(file: UploadFile = File(...), db: Session = Depends(get_db)):
+    # 1. Ensure it's a markdown or text file
+    if not file.filename.endswith(('.md', '.txt')):
+        raise HTTPException(status_code=400, detail="Only .md or .txt files are allowed")
+    
+    # 2. Read the file's binary content
+    content_bytes = await file.read()
+    
+    # 3. Decode the binary bytes into a standard text string
+    content_text = content_bytes.decode("utf-8")
+    
+    # 4. Save it to the database (using the filename as the title)
+    db_note = models.Note(title=file.filename, content=content_text)
+    db.add(db_note)
+    db.commit()
+    db.refresh(db_note)
+    
+    return db_note
