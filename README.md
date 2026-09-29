@@ -1,6 +1,6 @@
 # Markdown Note-taking API
 
-A RESTful backend service for creating, managing, and processing markdown notes. This API handles raw text, converts markdown to HTML, and integrates a third-party grammar checking engine.
+A RESTful backend service for creating, managing, and processing markdown notes. This API handles raw text input as well as physical file uploads, converts markdown to HTML, and integrates a third-party grammar checking engine.
 
 This project is a solution to the [Markdown Note-taking App challenge on roadmap.sh](https://roadmap.sh/projects/markdown-note-taking-app).
 
@@ -11,6 +11,7 @@ This project is a solution to the [Markdown Note-taking App challenge on roadmap
 - **Grammar Checking**: Integration with the LanguageTool API to analyze note content for grammatical and spelling errors.
 - **Data Persistence**: Local SQLite database integration using SQLAlchemy ORM.
 - **Automatic Documentation**: Interactive API documentation provided by FastAPI (Swagger UI).
+- **File Uploads**: Direct endpoint to upload and parse .md and .txt files into the database.
 
 ## Tech Stack
 
